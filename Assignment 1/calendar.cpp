@@ -67,12 +67,12 @@ void get1stDayOfMonth(int year, int month, int &firstWeekDay,
     // 1901/1/1 is Tuesday
     firstWeekDay = 2;
     for (int i = 1901; i <= year; i++) {
-        bool isLeap = isLeapYear(year);
+        bool isLeap = isLeapYear(i);
         for (int j = 1; j <= 12; j++) {
             if (year == i && month == j)
                 return;
-            int retrieve = (month == 2 ? (isLeap ? 0 : 2) : month);
-            int diff = daysInMonthData[retrieve] % 7 - 1;
+            int retrieve = (j == 2 ? (isLeap ? 0 : 2) : j);
+            int diff = daysInMonthData[retrieve] % 7;
 
             firstWeekDay = ((firstWeekDay - 1) + diff + 7) % 7 + 1;
         }
