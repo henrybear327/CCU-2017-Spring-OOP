@@ -4,6 +4,8 @@ Chun-Hung Tseng 曾俊宏
 Junior in department of computer science and information technology, CCU
 */
 #include <cassert>
+#include <cstring>
+#include <iomanip>
 #include <iostream>
 
 // define terminal color
@@ -114,9 +116,9 @@ void printTitle(int width, int year, int month)
     cout << year << " " << monthName[month] << endl;
 }
 
-void printWeekdayTitle(int width)
+void printWeekdayTitle(int width, int &spacing)
 {
-    const int spacing = (width - 2 - 7 * 3) / 6;
+    spacing = (width - 2 - 7 * 3) / 6;
     assert(spacing > 0);
 
     cout << " ";
@@ -130,6 +132,47 @@ void printWeekdayTitle(int width)
             cout << endl;
         }
     }
+}
+
+void printContent(int firstWeekDay, int daysInMonth, int spacing)
+{
+    cout << " ";
+    int count = 0;
+
+    // if the first day is Sunday, don't print out an empty line
+    for (int i = 0; firstWeekDay != 7 && i < firstWeekDay; i++) {
+        if (count != 0) {
+            for (int j = 0; j < spacing; j++) {
+                cout << " ";
+            }
+        }
+
+        for (int j = 0; j < 3; j++) {
+            cout << " ";
+        }
+
+        count++;
+    }
+
+    for (int i = 1; i <= daysInMonth; i++) {
+        if (count % 7 == 0) {
+            if (count != 0) {
+                cout << endl;
+                cout << " ";
+            }
+        } else {
+            for (int j = 0; j < spacing; j++) {
+                cout << " ";
+            }
+        }
+
+        cout << " ";
+        cout << setw(2) << i;
+
+        count++;
+    }
+
+    cout << endl;
 }
 
 void showCalendar(int year, int month, int firstWeekDay, int daysInMonth)
@@ -147,9 +190,11 @@ void showCalendar(int year, int month, int firstWeekDay, int daysInMonth)
 
     printDivider(width);
 
-    printWeekdayTitle(width);
+    int spacing;
+    printWeekdayTitle(width, spacing);
 
-    cout << firstWeekDay << endl;
+    // cout << firstWeekDay << endl;
+    printContent(firstWeekDay, daysInMonth, spacing);
 
     printDivider(width);
 }
