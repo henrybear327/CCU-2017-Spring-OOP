@@ -48,6 +48,13 @@ bool inputYrMn(int &year, int &month)
     return checkInputDataValidity(year, month);
 }
 
+int daysInMonthData[13] = {29, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+bool isLeapYear(int year)
+{
+    return (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
+}
+
 void get1stDayOfMonth(int year, int month, int &firstWeekDay,
                       int &daysInMonth)
 {
@@ -56,6 +63,23 @@ void get1stDayOfMonth(int year, int month, int &firstWeekDay,
     Pre-condition:
     Post-condition:
     */
+
+    // 1901/1/1 is Tuesday
+    firstWeekDay = 2;
+    for (int i = 1901; i <= year; i++) {
+        bool isLeap = isLeapYear(year);
+        for (int j = 1; j <= 12; j++) {
+            if (year == i && month == j)
+                return;
+            int retrieve = (month == 2 ? (isLeap ? 0 : 2) : month);
+            int diff = daysInMonthData[retrieve] % 7 - 1;
+
+            firstWeekDay = ((firstWeekDay - 1) + diff + 7) % 7 + 1;
+        }
+    }
+
+    assert(1 == -1); // should be run
+    return;
 }
 
 const char *monthName[13] = {
@@ -108,7 +132,7 @@ void printWeekdayTitle(int width)
     }
 }
 
-void showCalendar(int year, int month, int firstWeekDay, int dayInMonth)
+void showCalendar(int year, int month, int firstWeekDay, int daysInMonth)
 {
     /*
     Pre-condition:
@@ -125,6 +149,8 @@ void showCalendar(int year, int month, int firstWeekDay, int dayInMonth)
 
     printWeekdayTitle(width);
 
+    cout << firstWeekDay << endl;
+
     printDivider(width);
 }
 
@@ -140,11 +166,14 @@ int main()
     assert(1901 <= year && year <= 2099);
     assert(1 <= month && month <= 12);
 
-    cout << YELLOW << "THe input year " << year << " and month " << month
+    cout << YELLOW << "The input year " << year << " and month " << month
          << " is valid." << RESET << endl;
 
     // display the calendar in proper format
-    showCalendar(year, month, 1, 1);
+    int firstWeekDay;
+    get1stDayOfMonth(year, month, firstWeekDay, daysInMonthData[month]);
+
+    showCalendar(year, month, firstWeekDay, daysInMonthData[month]);
 
     return 0;
 }
