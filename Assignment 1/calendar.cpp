@@ -52,8 +52,11 @@ void get1stDayOfMonth(int year, int month, int &firstWeekDay,
     */
 }
 
+void showCalendar(int year, int month, int firstWeekDay, int dayInMonth) {}
+
 int main()
 {
+    // read and check input
     int year, month;
     while (inputYrMn(year, month) == false) {
         cout << RED << "The input is invalid, please try again!" << RESET << endl
@@ -65,6 +68,8 @@ int main()
 
     cout << YELLOW << "THe input year " << year << " and month " << month
          << " is valid." << RESET << endl;
+
+    // display the calendar in proper format
 
     return 0;
 }
