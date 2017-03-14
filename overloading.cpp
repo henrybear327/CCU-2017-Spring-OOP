@@ -25,6 +25,13 @@ void f(double a, int b)
 	cout << "double " << a << " int " << b << endl;
 }
 
+int dummy;
+// void show(int lenght, int& width = 1) // ref can't refer to const
+void show(int length, int& width = dummy)
+{
+	printf("Show\n");
+}
+
 int main()
 {
 	cout << avg(2, 4) << endl;
@@ -33,6 +40,8 @@ int main()
 	f(32, 31.3);
 	f(30.1, 33);
 	// f(32, 33); // error
+
+	show(1);
 
 	return 0;
 }
