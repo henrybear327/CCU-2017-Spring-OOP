@@ -52,12 +52,81 @@ void get1stDayOfMonth(int year, int month, int &firstWeekDay,
                       int &daysInMonth)
 {
     /*
+        TODO: write driver program to test this
     Pre-condition:
     Post-condition:
     */
 }
 
-void showCalendar(int year, int month, int firstWeekDay, int dayInMonth) {}
+const char *monthName[13] = {
+    "",     "January", "February",  "March",   "April",    "May",     "June",
+    "July", "August",  "September", "October", "November", "December"
+};
+
+const char *weekdayName[8] = {"",    "SUN", "MON", "TUE",
+                              "WED", "THU", "FRI", "SAT"
+                             };
+
+void printDivider(int width)
+{
+    for (int i = 0; i < width; i++) {
+        cout << "_";
+    }
+    cout << endl;
+}
+
+int getOffsetForTitle(int width, int month)
+{
+    int titleLength = 4 + 1 + strlen(monthName[month]);
+    return width / 2 - titleLength / 2;
+}
+
+void printTitle(int width, int year, int month)
+{
+    const int titleOffset = getOffsetForTitle(width, month);
+    for (int i = 0; i < titleOffset; i++) {
+        cout << " ";
+    }
+    cout << year << " " << monthName[month] << endl;
+}
+
+void printWeekdayTitle(int width)
+{
+    const int spacing = (width - 2 - 7 * 3) / 6;
+    assert(spacing > 0);
+
+    cout << " ";
+    for (int i = 1; i <= 7; i++) {
+        cout << weekdayName[i];
+        if (i < 7) {
+            for (int j = 0; j < spacing; j++) {
+                cout << " ";
+            }
+        } else {
+            cout << endl;
+        }
+    }
+}
+
+void showCalendar(int year, int month, int firstWeekDay, int dayInMonth)
+{
+    /*
+    Pre-condition:
+    Post-condition:
+    */
+
+    const int width = 38;
+
+    printDivider(width);
+
+    printTitle(width, year, month);
+
+    printDivider(width);
+
+    printWeekdayTitle(width);
+
+    printDivider(width);
+}
 
 int main()
 {
@@ -75,6 +144,7 @@ int main()
          << " is valid." << RESET << endl;
 
     // display the calendar in proper format
+    showCalendar(year, month, 1, 1);
 
     return 0;
 }
