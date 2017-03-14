@@ -17,6 +17,8 @@ Junior in department of computer science and information technology, CCU
 #define WHITE "\x1B[37m"
 #define RESET "\x1B[0m"
 
+#define DEBUG 1
+
 using namespace std;
 
 bool checkInputDataValidity(int year, int month)
@@ -211,14 +213,20 @@ int main()
     assert(1901 <= year && year <= 2099);
     assert(1 <= month && month <= 12);
 
-    cout << YELLOW << "The input year " << year << " and month " << month
-         << " is valid." << RESET << endl;
+#if DEBUG == 1
+    for (month = 1; month <= 12; month++) {
+#endif
+        cout << YELLOW << "The input year " << year << " and month " << month
+             << " is valid." << RESET << endl;
 
-    // display the calendar in proper format
-    int firstWeekDay;
-    get1stDayOfMonth(year, month, firstWeekDay, daysInMonthData[month]);
+        // display the calendar in proper format
+        int firstWeekDay;
+        get1stDayOfMonth(year, month, firstWeekDay, daysInMonthData[month]);
 
-    showCalendar(year, month, firstWeekDay, daysInMonthData[month]);
+        showCalendar(year, month, firstWeekDay, daysInMonthData[month]);
+#if DEBUG == 1
+    }
+#endif
 
     return 0;
 }
