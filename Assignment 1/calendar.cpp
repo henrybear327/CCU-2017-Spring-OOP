@@ -3,6 +3,7 @@ Chun-Hung Tseng 曾俊宏
 403410033
 Junior in department of computer science and information technology, CCU
 */
+
 #include <cassert>
 #include <cstring>
 #include <iomanip>
@@ -17,7 +18,11 @@ Junior in department of computer science and information technology, CCU
 #define WHITE "\x1B[37m"
 #define RESET "\x1B[0m"
 
-#define DEBUG 1
+// define DEBUGGING CONSTANT
+#define DEBUG 0
+// 0 for assignment turnin and demo
+// 1 print out all months in a certain year
+// 2 using driver program
 
 using namespace std;
 
@@ -63,7 +68,6 @@ void get1stDayOfMonth(int year, int month, int &firstWeekDay,
                       int &daysInMonth)
 {
     /*
-        TODO: write driver program to test this
     Pre-condition:
     Post-condition:
     */
@@ -201,8 +205,33 @@ void showCalendar(int year, int month, int firstWeekDay, int daysInMonth)
     printDivider(width);
 }
 
+void driverProgram()
+{
+    int year, month, firstWeekDay;
+    do {
+        // cout << "Driver program testing! Enter -1 -1 to quit" << endl;
+
+        // cin >> year >> month;
+
+        // if (year == -1 && month == -1)
+        // return;
+        for (year = 1901; year <= 2099; year++) {
+            for (month = 1; month <= 12; month++) {
+                get1stDayOfMonth(year, month, firstWeekDay, daysInMonthData[month]);
+                cout << year << " " << month << " " << firstWeekDay << endl;
+            }
+        }
+        break;
+    } while (1);
+}
+
 int main()
 {
+#if DEBUG == 2
+    driverProgram();
+    return 0;
+#endif
+
     // read and check input
     int year, month;
     while (inputYrMn(year, month) == false) {
