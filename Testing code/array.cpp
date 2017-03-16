@@ -54,7 +54,13 @@ int main()
 	int score2d[NUM_STUDENTS][NUM_STUDENTS];
 	fillUp(score2d, NUM_STUDENTS); // array name will be sufficient
 	print(score2d, NUM_STUDENTS);
+
+	// array can't do a1 = a2
+	// but array object, be careful
+	int* a1 = new int[3];
+	int* a2 = new int[3];
 	
+	a1 = a2;
 
 	return 0;
 }
