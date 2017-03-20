@@ -5,6 +5,7 @@ Junior in department of computer science and information technology, CCU
 */
 
 #include <cassert>
+#include <cmath>
 #include <cstring>
 #include <iomanip>
 #include <iostream>
@@ -22,7 +23,8 @@ Junior in department of computer science and information technology, CCU
 #define DEBUG 0
 // 0 for assignment turnin and demo
 // 1 print out all months in a certain year
-// 2 using driver program
+// 2 using java driver program
+// 3 using c++ driver program
 
 using namespace std;
 
@@ -69,15 +71,17 @@ void get1stDayOfMonth(int year, int month, int &firstWeekDay,
     Pre-condition:
     Post-condition:
     */
-	
-	const int daysInMonthData[13] = {29, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-	if(month == 2 && isLeapYear(year))
-		daysInMonth = daysInMonthData[0];
-	else
-		daysInMonth = daysInMonthData[month];
+
+    const int daysInMonthData[13] = {29, 31, 28, 31, 30, 31, 30,
+                                     31, 31, 30, 31, 30, 31
+                                    };
+    if (month == 2 && isLeapYear(year))
+        daysInMonth = daysInMonthData[0];
+    else
+        daysInMonth = daysInMonthData[month];
 
     // 1901/1/1 is Tuesday
-    firstWeekDay = 2;
+    firstWeekDay = 2; // range 1 - 7
     for (int i = 1901; i <= year; i++) {
         bool isLeap = isLeapYear(i);
         for (int j = 1; j <= 12; j++) {
@@ -209,6 +213,7 @@ void showCalendar(int year, int month, int firstWeekDay, int daysInMonth)
     printDivider(width);
 }
 
+// Will only be invoked when DEBUG level is set to 2
 void forJavaDriverProgram()
 {
     int year, month, firstWeekDay;
@@ -221,9 +226,59 @@ void forJavaDriverProgram()
         // return;
         for (year = 1901; year <= 2099; year++) {
             for (month = 1; month <= 12; month++) {
-				int daysInMonth;
+                int daysInMonth;
                 get1stDayOfMonth(year, month, firstWeekDay, daysInMonth);
                 cout << year << " " << month << " " << firstWeekDay << endl;
+            }
+        }
+        break;
+    } while (1);
+}
+
+// Will only be invoked when DEBUG level is set to 3
+int get1stDayOfMonthByFormula(int year, int month)
+{
+    int y = year % 100;
+    if (month <= 2)
+        y--;
+    int c = year / 100;
+    int d = 1;
+    // 1  2  3  4  5  6  7  8  9  10 11 12
+    // 11 12 1  2  3  4  5  6  7  8  9  10
+    int m = (month <= 2 ? month + 10 : month - 2);
+
+    // printf("%d %d %d %d\n", d, m, y, c);
+
+    int w = (d + int(floor(2.6 * m - 0.2)) + y + int(floor(y / 4.0)) +
+             int(floor(c / 4.0)) - 2 * c);
+    w %= 7;
+    w += 7;
+    w %= 7;
+    w = (w == 0 ? w + 7 : w);
+
+    return w;
+}
+
+// Will only be invoked when DEBUG level is set to 3
+// Program will be aborted if the firstWeekDay calculation failed
+void forCppDriverProgram()
+{
+    int year, month, firstWeekDay;
+    do {
+        // cout << "Driver program testing! Enter -1 -1 to quit" << endl;
+
+        // cin >> year >> month;
+
+        // if (year == -1 && month == -1)
+        // return;
+        for (year = 1901; year <= 2099; year++) {
+            for (month = 1; month <= 12; month++) {
+                int daysInMonth;
+                get1stDayOfMonth(year, month, firstWeekDay, daysInMonth);
+                cout << year << " " << month << " " << firstWeekDay << endl;
+                int w = get1stDayOfMonthByFormula(year, month);
+                cout << year << " " << month << " " << w << endl;
+                assert(w == firstWeekDay);
             }
         }
         break;
@@ -234,6 +289,11 @@ int main()
 {
 #if DEBUG == 2
     forJavaDriverProgram();
+    return 0;
+#endif
+
+#if DEBUG == 3
+    forCppDriverProgram();
     return 0;
 #endif
 
