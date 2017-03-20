@@ -63,6 +63,10 @@ bool inputYrMn(int &year, int &month)
         Returns if true if the year and month input is valid.
         Otherwise, return false.
 
+        The definition of valid is stated as followed:
+        1901 <= year && year <= 2099
+        1 <= month && month <= 12
+
         The year and month received from stdin will always be stored in the
         integer referneces.
     */
@@ -79,8 +83,9 @@ bool isLeapYear(int year)
     /*
     Pre-condition:
         Given valid year in integer
+        (1901 <= year && year <= 2099)
     Post-condition:
-        Returns true if the input year is a leap year, false otherwise.
+        Returns boolean true if the input year is a leap year, false otherwise.
     */
     return (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
 }
@@ -90,9 +95,18 @@ void get1stDayOfMonth(int year, int month, int &firstWeekDay,
 {
     /*
     Pre-condition:
+        Given two integers year and month within the valid range, and
+        two integer references firstWeekDay and daysInMonth
 
+        The valid range for year and month are:
+        1901 <= year && year <= 2099
+        1 <= month && month <= 12
     Post-condition:
+        firstWeekDay will be assigned the week day of year/month/1.
+        Notice that the week day numbering is:
+        [Monday, ..., Sunday] => [1, ..., 7]
 
+        daysInMonth will be assigned the value of days in the month
     */
 
     const int daysInMonthData[13] = {29, 31, 28, 31, 30, 31, 30,
@@ -125,9 +139,10 @@ void printDivider(int width)
 {
     /*
     Pre-condition:
-
+        Given width in integer
+        width > 0
     Post-condition:
-
+        Prints "width"s _ in the terminal
     */
 
     for (int i = 0; i < width; i++) {
@@ -140,7 +155,7 @@ int getOffsetForTitle(int width, int month)
 {
     /*
     Pre-condition:
-
+        
     Post-condition:
 
     */
