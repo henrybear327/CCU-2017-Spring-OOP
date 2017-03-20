@@ -57,8 +57,6 @@ bool inputYrMn(int &year, int &month)
     return checkInputDataValidity(year, month);
 }
 
-int daysInMonthData[13] = {29, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
 bool isLeapYear(int year)
 {
     return (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
@@ -71,6 +69,12 @@ void get1stDayOfMonth(int year, int month, int &firstWeekDay,
     Pre-condition:
     Post-condition:
     */
+	
+	const int daysInMonthData[13] = {29, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	if(month == 2 && isLeapYear(year))
+		daysInMonth = daysInMonthData[0];
+	else
+		daysInMonth = daysInMonthData[month];
 
     // 1901/1/1 is Tuesday
     firstWeekDay = 2;
@@ -205,7 +209,7 @@ void showCalendar(int year, int month, int firstWeekDay, int daysInMonth)
     printDivider(width);
 }
 
-void driverProgram()
+void forJavaDriverProgram()
 {
     int year, month, firstWeekDay;
     do {
@@ -217,7 +221,8 @@ void driverProgram()
         // return;
         for (year = 1901; year <= 2099; year++) {
             for (month = 1; month <= 12; month++) {
-                get1stDayOfMonth(year, month, firstWeekDay, daysInMonthData[month]);
+				int daysInMonth;
+                get1stDayOfMonth(year, month, firstWeekDay, daysInMonth);
                 cout << year << " " << month << " " << firstWeekDay << endl;
             }
         }
@@ -228,7 +233,7 @@ void driverProgram()
 int main()
 {
 #if DEBUG == 2
-    driverProgram();
+    forJavaDriverProgram();
     return 0;
 #endif
 
@@ -249,10 +254,10 @@ int main()
              << " is valid." << RESET << endl;
 
         // display the calendar in proper format
-        int firstWeekDay;
-        get1stDayOfMonth(year, month, firstWeekDay, daysInMonthData[month]);
+        int firstWeekDay, daysInMonth;
+        get1stDayOfMonth(year, month, firstWeekDay, daysInMonth);
 
-        showCalendar(year, month, firstWeekDay, daysInMonthData[month]);
+        showCalendar(year, month, firstWeekDay, daysInMonth);
 #if DEBUG == 1
     }
 #endif
