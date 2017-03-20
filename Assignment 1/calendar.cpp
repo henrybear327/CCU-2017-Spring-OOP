@@ -10,6 +10,8 @@ Junior in department of computer science and information technology, CCU
 #include <iomanip>
 #include <iostream>
 
+using namespace std;
+
 // define terminal color
 #define RED "\x1B[31m"
 #define GREEN "\x1B[32m"
@@ -19,14 +21,21 @@ Junior in department of computer science and information technology, CCU
 #define WHITE "\x1B[37m"
 #define RESET "\x1B[0m"
 
-// define DEBUGGING CONSTANT
-#define DEBUG 0
+// DEBUGGING CONSTANT
 // 0 for assignment turnin and demo
 // 1 print out all months in a certain year
 // 2 using java driver program
 // 3 using c++ driver program
+#define DEBUG 0
 
-using namespace std;
+const char *monthName[13] = {
+    "",     "January", "February",  "March",   "April",    "May",     "June",
+    "July", "August",  "September", "October", "November", "December"
+};
+
+const char *weekdayName[8] = {"",    "SUN", "MON", "TUE",
+                              "WED", "THU", "FRI", "SAT"
+                             };
 
 bool checkInputDataValidity(int year, int month)
 {
@@ -49,7 +58,13 @@ bool inputYrMn(int &year, int &month)
 {
     /*
     Pre-condition:
+        Given two references to integer
     Post-condition:
+        Returns if true if the year and month input is valid.
+        Otherwise, return false.
+
+        The year and month received from stdin will always be stored in the
+        integer referneces.
     */
     cout << GREEN << "Please enter a year: " << RESET;
     cin >> year;
@@ -61,6 +76,12 @@ bool inputYrMn(int &year, int &month)
 
 bool isLeapYear(int year)
 {
+    /*
+    Pre-condition:
+        Given valid year in integer
+    Post-condition:
+        Returns true if the input year is a leap year, false otherwise.
+    */
     return (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
 }
 
@@ -69,7 +90,9 @@ void get1stDayOfMonth(int year, int month, int &firstWeekDay,
 {
     /*
     Pre-condition:
+
     Post-condition:
+
     */
 
     const int daysInMonthData[13] = {29, 31, 28, 31, 30, 31, 30,
@@ -98,17 +121,15 @@ void get1stDayOfMonth(int year, int month, int &firstWeekDay,
     return;
 }
 
-const char *monthName[13] = {
-    "",     "January", "February",  "March",   "April",    "May",     "June",
-    "July", "August",  "September", "October", "November", "December"
-};
-
-const char *weekdayName[8] = {"",    "SUN", "MON", "TUE",
-                              "WED", "THU", "FRI", "SAT"
-                             };
-
 void printDivider(int width)
 {
+    /*
+    Pre-condition:
+
+    Post-condition:
+
+    */
+
     for (int i = 0; i < width; i++) {
         cout << "_";
     }
@@ -117,12 +138,26 @@ void printDivider(int width)
 
 int getOffsetForTitle(int width, int month)
 {
+    /*
+    Pre-condition:
+
+    Post-condition:
+
+    */
+
     int titleLength = 4 + 1 + strlen(monthName[month]);
     return width / 2 - titleLength / 2;
 }
 
 void printTitle(int width, int year, int month)
 {
+    /*
+    Pre-condition:
+
+    Post-condition:
+
+    */
+
     const int titleOffset = getOffsetForTitle(width, month);
     for (int i = 0; i < titleOffset; i++) {
         cout << " ";
@@ -132,6 +167,13 @@ void printTitle(int width, int year, int month)
 
 void printWeekdayTitle(int width, int &spacing)
 {
+    /*
+    Pre-condition:
+
+    Post-condition:
+
+    */
+
     spacing = (width - 2 - 7 * 3) / 6;
     assert(spacing > 0);
 
@@ -150,6 +192,13 @@ void printWeekdayTitle(int width, int &spacing)
 
 void printContent(int firstWeekDay, int daysInMonth, int spacing)
 {
+    /*
+    Pre-condition:
+
+    Post-condition:
+
+    */
+
     cout << " ";
     int count = 0;
 
@@ -193,7 +242,9 @@ void showCalendar(int year, int month, int firstWeekDay, int daysInMonth)
 {
     /*
     Pre-condition:
+
     Post-condition:
+
     */
 
     const int width = 38;
@@ -216,6 +267,13 @@ void showCalendar(int year, int month, int firstWeekDay, int daysInMonth)
 // Will only be invoked when DEBUG level is set to 2
 void forJavaDriverProgram()
 {
+    /*
+    Pre-condition:
+
+    Post-condition:
+
+    */
+
     int year, month, firstWeekDay;
     do {
         // cout << "Driver program testing! Enter -1 -1 to quit" << endl;
@@ -238,6 +296,13 @@ void forJavaDriverProgram()
 // Will only be invoked when DEBUG level is set to 3
 int get1stDayOfMonthByFormula(int year, int month)
 {
+    /*
+    Pre-condition:
+
+    Post-condition:
+
+    */
+
     int y = year % 100;
     if (month <= 2)
         y--;
@@ -263,6 +328,13 @@ int get1stDayOfMonthByFormula(int year, int month)
 // Program will be aborted if the firstWeekDay calculation failed
 void forCppDriverProgram()
 {
+    /*
+    Pre-condition:
+
+    Post-condition:
+
+    */
+
     int year, month, firstWeekDay;
     do {
         // cout << "Driver program testing! Enter -1 -1 to quit" << endl;
