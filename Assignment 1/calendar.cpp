@@ -182,7 +182,7 @@ void printTitle(int width, int year, int month)
       1901 <= year && year <= 2099
       1 <= month && month <= 12
     Post-condition:
-      Prints out the tilte bar with appropriate spacing and words
+      Prints out the title bar with appropriate spacing and words
     */
 
     const int titleOffset = getOffsetForTitle(width, month);
@@ -198,7 +198,7 @@ void printWeekdayTitle(int width, int &spacing)
     Pre-condition:
       width >= 0
     Post-condition:
-      Stores the spacing, >= 0, in spacing variable reference
+      Stores the spacing, >= 0, in spacing reference variable 
       Prints out the weekday title bar with appropriate spacing and words
     */
 
