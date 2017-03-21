@@ -4,7 +4,8 @@ Chun-Hung Tseng 曾俊宏
 Junior in department of computer science and information technology, CCU
 
 The program was tested on the computer with the following OS and compiler:
-- Linux ubuntu 4.8.0-41-generic #44~16.04.1-Ubuntu SMP Fri Mar 3 17:11:16 UTC 2017
+- Linux ubuntu 4.8.0-41-generic #44~16.04.1-Ubuntu SMP Fri Mar 3 17:11:16 UTC
+2017
 x86_64 x86_64 x86_64 GNU/Linux
 - g++ (Ubuntu 5.4.0-6ubuntu1~16.04.4) 5.4.0 20160609
 
@@ -48,6 +49,7 @@ bool checkInputDataValidity(int year, int month)
 {
     /*
     Check if year and month is within proper range
+
     Pre-condition:
             Given two integers, year and month
     Post-condition:
@@ -67,7 +69,7 @@ bool inputYrMn(int &year, int &month)
     Pre-condition:
         Given two references to integer
     Post-condition:
-        Returns if true if the year and month input is valid.
+        Returns boolean true if the year and month input is valid.
         Otherwise, return false.
 
         The definition of valid is stated as followed:
@@ -138,7 +140,7 @@ void get1stDayOfMonth(int year, int month, int &firstWeekDay,
         }
     }
 
-    assert(1 == -1); // should be run
+    // assert(1 == -1); // should NOT be run
     return;
 }
 
@@ -162,9 +164,10 @@ int getOffsetForTitle(int width, int month)
 {
     /*
     Pre-condition:
-
+      width >= 0
+      1 <= month && month <= 12
     Post-condition:
-
+      Returns an integer that is >= 0
     */
 
     int titleLength = 4 + 1 + strlen(monthName[month]);
@@ -175,9 +178,11 @@ void printTitle(int width, int year, int month)
 {
     /*
     Pre-condition:
-
+      width >= 0
+      1901 <= year && year <= 2099
+      1 <= month && month <= 12
     Post-condition:
-
+      Prints out the tilte bar with appropriate spacing and words
     */
 
     const int titleOffset = getOffsetForTitle(width, month);
@@ -191,9 +196,10 @@ void printWeekdayTitle(int width, int &spacing)
 {
     /*
     Pre-condition:
-
+      width >= 0
     Post-condition:
-
+      Stores the spacing, >= 0, in spacing variable reference
+      Prints out the weekday title bar with appropriate spacing and words
     */
 
     spacing = (width - 2 - 7 * 3) / 6;
@@ -216,9 +222,12 @@ void printContent(int firstWeekDay, int daysInMonth, int spacing)
 {
     /*
     Pre-condition:
-
+      1 <= firstWeekDay && firstWeekDay <= 7
+      28 <= daysInMonth && daysInMonth <= 31
+      spacing >= 0
     Post-condition:
-
+      Prints out the calendar content with the format stated on the assignment
+    spec
     */
 
     cout << " ";
@@ -264,9 +273,13 @@ void showCalendar(int year, int month, int firstWeekDay, int daysInMonth)
 {
     /*
     Pre-condition:
-
+      1901 <= year && year <= 2099
+      1 <= month && month <= 12
+      1 <= firstWeekDay && firstWeekDay <= 7
+      28 <= daysInMonth && daysInMonth <= 31
     Post-condition:
-
+      Prints out the calendar of a specific year and month with the format stated
+    on the assignment spec
     */
 
     const int width = 38;
@@ -291,9 +304,9 @@ void forJavaDriverProgram()
 {
     /*
     Pre-condition:
-
+      true
     Post-condition:
-
+      Prints out lines of "year month firstWeekDay" from 1901/1 to 2099/12
     */
 
     int year, month, firstWeekDay;
@@ -320,9 +333,10 @@ int get1stDayOfMonthByFormula(int year, int month)
 {
     /*
     Pre-condition:
-
+      1901 <= year && year <= 2099
+      1 <= month && month <= 12
     Post-condition:
-
+      Returns the week day ranging from 1 to 7 => Monday to Sunday
     */
 
     int y = year % 100;
@@ -352,9 +366,10 @@ void forCppDriverProgram()
 {
     /*
     Pre-condition:
-
+      true
     Post-condition:
-
+      Terminates the program if the firstWeekDay calculated by get1stDayOfMonth()
+      doesn't match the firstWeekDay calculated by get1stDayOfMonthByFormula()
     */
 
     int year, month, firstWeekDay;
