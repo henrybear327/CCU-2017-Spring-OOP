@@ -2,38 +2,35 @@
 
 using namespace std;
 
-struct Point {
-	double x;
-	double y;
-	long long int color;
-
-	void init(double x, double y, int color) {
-		this->x = x;
-		this->y = y;
-		this->color = color;
-	}
-
-	void print() {
-		printf("%f %f %lld\n", x, y, color);
-	}
+class DayOfYear 
+{
+	public: // private, protected
+		void init();
+		void output();
+		int month;
+		int day;	
 };
+
+// :: for class
+// . for object only -> different from Java, Swift, etc.
+void DayOfYear::init() 
+{
+	month = 3;
+	day = 27;
+}
+
+void DayOfYear::output() 
+{
+	printf("%d %d\n", this->month, day);
+}
 
 int main()
 {
-	// struct Point p;		
-	// Point p({1.5, 2.7, 4});		
-	Point p = {1.5, 2.7, 4};
-	p.print();
-	p.init(1, 2, 3);
-	p.print();
+	DayOfYear today; // don't need to new??
 	
-	/*
-	Point pp = {1.5}; // without initializer -> 0 -> warning!!
-	pp.print();
-	*/
-
-	// Point a, b;
-	// a = b; // this works
+	today.output();
+	today.init();
+	today.output();
 
 	return 0;
 }
