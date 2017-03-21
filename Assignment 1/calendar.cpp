@@ -2,6 +2,13 @@
 Chun-Hung Tseng 曾俊宏
 403410033
 Junior in department of computer science and information technology, CCU
+
+The program was tested on the computer with the following OS and compiler:
+- Linux ubuntu 4.8.0-41-generic #44~16.04.1-Ubuntu SMP Fri Mar 3 17:11:16 UTC 2017
+x86_64 x86_64 x86_64 GNU/Linux
+- g++ (Ubuntu 5.4.0-6ubuntu1~16.04.4) 5.4.0 20160609
+
+A makefile is provided for compilation.
 */
 
 #include <cassert>
@@ -155,7 +162,7 @@ int getOffsetForTitle(int width, int month)
 {
     /*
     Pre-condition:
-        
+
     Post-condition:
 
     */
@@ -366,6 +373,7 @@ void forCppDriverProgram()
                 int w = get1stDayOfMonthByFormula(year, month);
                 cout << year << " " << month << " " << w << endl;
                 assert(w == firstWeekDay);
+                printf("Check passed\n");
             }
         }
         break;
