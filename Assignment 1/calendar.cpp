@@ -155,7 +155,7 @@ int getOffsetForTitle(int width, int month)
 {
     /*
     Pre-condition:
-        
+
     Post-condition:
 
     */
@@ -343,6 +343,7 @@ int get1stDayOfMonthByFormula(int year, int month)
 // Program will be aborted if the firstWeekDay calculation failed
 void forCppDriverProgram()
 {
+    // https://en.wikipedia.org/wiki/Determination_of_the_day_of_the_week#Gauss.27s_algorithm
     /*
     Pre-condition:
 
