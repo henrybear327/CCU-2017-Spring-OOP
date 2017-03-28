@@ -5,7 +5,10 @@ using namespace std;
 class DayOfYear 
 {
 	public: // private, protected
-		void init();
+		// void init();
+		// constructor
+		DayOfYear(int monthValue, int dayValue);
+		DayOfYear(); // default constructor, only will be given automatically by compiler when no constructor is provided at all
 		void output();
 		void set(int newMonth, int newDay);
 		void set(int newMonth);
@@ -18,11 +21,25 @@ class DayOfYear
 
 // :: for class
 // . for object only -> different from Java, Swift, etc.
+
+DayOfYear::DayOfYear()
+{
+	printf("default\n");
+}
+
+DayOfYear::DayOfYear(int monthValue, int dayValue)
+{
+	month = monthValue;
+	day = dayValue;
+}
+
+/*
 void DayOfYear::init() 
 {
 	month = 3;
 	day = 27;
 }
+*/
 
 void DayOfYear::output() 
 {
@@ -52,10 +69,19 @@ int DayOfYear::getDay()
 
 int main()
 {
-	DayOfYear today; // don't need to new??
+	int aa, bb, cc;
+	aa = 3;
+	bb = int(4);
+	cc = int();
+
+	printf("%d %d %d\n", aa, bb, cc);
+
+	DayOfYear today(3, 27), hey; // default constructor call (no arg, no parenthesis)
+
+	DayOfYear test = DayOfYear(); // default constructor call
 	
 	today.output();
-	today.init();
+	// today.init();
 	today.output();
 
 	today.set(12, 31);
