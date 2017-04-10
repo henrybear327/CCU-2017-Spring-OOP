@@ -267,7 +267,7 @@ void GameOfLife::proceed(int t)
 
 		if(autoProceed) {
 			cout << YELLOW "Generation " << g << NONE << endl;
-			usleep(100000);
+			usleep(50000);
 		}
 	}
 }
@@ -293,7 +293,10 @@ int main()
 #if DEBUG == 1
 	for(int i = 1; i <= 4; i++) {
 		GameOfLife game;
-		game.initialize(i);
+		if(i == 4)
+			game.initialize(70);
+		else
+			game.initialize(i);
 		game.setGeneration(100);
 		game.setAutoProceed("y");
 		game.info();
