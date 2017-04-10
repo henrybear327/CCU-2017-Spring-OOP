@@ -18,7 +18,7 @@ Notes:
 
 using namespace std;
 
-#define DEBUG 1
+#define DEBUG 0
 
 // define terminal color
 #define RED "\x1B[31m"
@@ -58,12 +58,20 @@ class GameOfLife
 
 GameOfLife::GameOfLife()
 {
+	/*
+	pre-condition: true
+	post-condition: width is set to 80, height is set to 23
+	*/
 	this->w = 80;
 	this->h = 23;
 }
 
 GameOfLife::GameOfLife(int w, int h)
 {
+	/*
+	pre-condition: w and h within range [16, 256]
+	post-condition: width and height is set to w and h respectively
+	*/
 	this->w = w;
 	this->h = h;
 
@@ -75,6 +83,10 @@ GameOfLife::GameOfLife(int w, int h)
 
 void GameOfLife::info()
 {
+	/*
+	pre-condition: true
+	post-condition: prints out the configuration of the class
+	*/
 	cout << GREEN "\n\n\n====================INFO====================" NONE << endl;
 	cout << GREEN "w = " << w << ", h = " << h << NONE << endl;
 	if(mode == 1)
@@ -97,6 +109,11 @@ void GameOfLife::info()
 
 void GameOfLife::initialize(int p)
 {
+	/*
+	pre-condition: p within range [1, 100]
+	post-condition: setup the cell array with proper initial state
+	*/
+
 	int mode = p;
 	if(! (1 <= mode && mode <= 100)) {
 		cout << RED "Mode out-of-range!" NONE << endl;
@@ -175,6 +192,10 @@ void GameOfLife::initialize(int p)
 
 void GameOfLife::setGeneration(int generation)
 {
+	/*
+	pre-condition: generation > 0
+	post-condition: set the generation value of the class to generation
+	*/
 	if(generation < 1) {
 		cout << RED "Generation out-of-range!" NONE << endl;
 		return;
@@ -184,11 +205,21 @@ void GameOfLife::setGeneration(int generation)
 
 bool GameOfLife::inBound(int x, int y)
 {
+	/*
+	pre-condition: given x and y
+	post-condition: returns true if both x and y is within the defined cell range
+	*/
 	return (0 <= x && x < h) && (0 <= y && y < w);
 }
 
 void GameOfLife::go()
 {
+	/*
+	pre-condition: true
+	post-condition: returns the cell array with states after
+					performing one round of game of life, using the rules
+					specified in the assignment handout
+	*/
 	const int dx[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
 	const int dy[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
 	int newStateMap[300][300];
@@ -219,6 +250,11 @@ void GameOfLife::go()
 
 void GameOfLife::setAutoProceed(char inp[])
 {
+	/*
+	pre-condition: given a string
+	post-condition: sets the autoProceed variable to true if the
+					first character in the string is y
+	*/
 	if(inp[0] == 'y') {
 		this->autoProceed = true;
 	} else {
@@ -228,6 +264,11 @@ void GameOfLife::setAutoProceed(char inp[])
 
 void GameOfLife::promptForContinue(bool firstTime)
 {
+	/*
+	pre-condition: given bool firstTime
+	post-condition: Prints the prompt and waits for any key to be pressed.
+					Call getchar() twice if firstTime is true.
+	*/
 	cout << YELLOW "Press any key to continue..." << NONE << endl;
 	if(firstTime)
 		getchar();
@@ -236,6 +277,10 @@ void GameOfLife::promptForContinue(bool firstTime)
 
 void GameOfLife::run()
 {
+	/*
+	pre-condition: the class is properly configurated
+	post-condition: Performs game of life.
+	*/
 	if(autoProceed) {
 		// auto
 		cout << YELLOW "Initial state" NONE << endl;
@@ -259,6 +304,10 @@ void GameOfLife::run()
 
 void GameOfLife::proceed(int t)
 {
+	/*
+	pre-condition: given t
+	post-condition: Performs t rounds of game of life
+	*/
 	for(int g = 1; g <= t; g++) {
 		clearScreen();
 		// printf("\n");
@@ -274,12 +323,20 @@ void GameOfLife::proceed(int t)
 
 void GameOfLife::clearScreen()
 {
+	/*
+	pre-condition: true
+	post-condition: clears the terminal
+	*/
 	for(int i = 0; i < 100; i++)
 		printf("\n");
 }
 
 void GameOfLife::display()
 {
+	/*
+	pre-condition: true
+	post-condition: prints out the cell array
+	*/
 	for(int i = 0; i < h; i++) {
 		for(int j = 0; j < w; j++) {
 			printf("%c", cell[i][j] == true ? '#' : '.');
