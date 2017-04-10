@@ -208,16 +208,21 @@ void GameOfLife::promptForContinue(bool firstTime)
 void GameOfLife::run()
 {	
 	if(autoProceed) {
+		// auto
 		cout << YELLOW "Initial state" NONE << endl;
 		display();
+		promptForContinue();
+
 		proceed(generation);
 	} else {
+		// manual
 		cout << YELLOW "Initial state" NONE << endl;
 		display();
 		promptForContinue();
 
 		for(int i = 0; i < generation; i++) {
 			proceed();	
+			cout << YELLOW "Generation " << i + 1 << NONE << endl;
 			promptForContinue();
 		}
 	}
@@ -230,10 +235,11 @@ void GameOfLife::proceed(int p)
 		// printf("\n");
 		go();	
 		display();
-		cout << YELLOW "Generation " << g << NONE << endl;
 
-		if(autoProceed)
-			sleep(1);
+		if(autoProceed) {
+			cout << YELLOW "Generation " << g << NONE << endl;
+			usleep(100000);
+		}
 	}
 }
 
@@ -245,8 +251,8 @@ void GameOfLife::clearScreen()
 
 void GameOfLife::display()
 {	
-	for(int i = 0; i < w; i++) {
-		for(int j = 0; j < h; j++) {
+	for(int i = 0; i < h; i++) {
+		for(int j = 0; j < w; j++) {
 			printf("%c", stateMap[i][j] == true ? '#' : '.');
 		}
 		printf("\n");
