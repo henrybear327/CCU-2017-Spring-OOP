@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <unistd.h>
+#include <ctime>
 
 using namespace std;
 
@@ -140,7 +141,18 @@ void GameOfLife::initialize(int t)
 			}
 		}
 	} else {
-
+		srand(time(NULL));
+		int count = w * h * (mode * 1.0 / 100);
+		for(int i = 0; i < count; i++) {
+			do {
+				int x = rand() % h;
+				int y = rand() % w;
+				if(stateMap[x][y] == false) {
+					stateMap[x][y] = true;
+					break;
+				}
+			} while(1);
+		}
 	}
 }
 
