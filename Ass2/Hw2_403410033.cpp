@@ -1,9 +1,24 @@
+/*
+Name: 曾俊宏
+Student ID: 403410033
+Department: Computer Science and Information Technology
+Year: Junior
+
+Notes:
+
+1. The program has a make file, which can be used for compiling the program.
+2. The program is tested on MacOS 10.12.4, with g++-6 (Homebrew GCC 6.3.0_1) 6.3.0
+3. Change DEBUG value to 1 for testing four patterns with 100 generations
+*/
+
 #include <iostream>
 #include <cstring>
 #include <unistd.h>
 #include <ctime>
 
 using namespace std;
+
+#define DEBUG 1
 
 // define terminal color
 #define RED "\x1B[31m"
@@ -33,7 +48,7 @@ class GameOfLife
 		int h;
 		int mode;
 		int generation;
-		bool stateMap[300][300];
+		bool cell[300][300];
 		void clearScreen();
 		void go();
 		bool inBound(int x, int y);
@@ -45,8 +60,6 @@ GameOfLife::GameOfLife()
 {
 	this->w = 80;
 	this->h = 23;
-
-	cout << CYAN "w = " << w << ", h = " <<  h << NONE << endl;
 }
 
 GameOfLife::GameOfLife(int w, int h)
@@ -64,7 +77,7 @@ void GameOfLife::info()
 {
 	cout << GREEN "\n\n\n====================INFO====================" NONE << endl;
 	cout << GREEN "w = " << w << ", h = " << h << NONE << endl;
-	if(mode == 1) 
+	if(mode == 1)
 		cout << GREEN "Using pattern Glider"  NONE << endl;
 	else if(mode == 2)
 		cout << GREEN "Using pattern Lightweight Spaceship" NONE << endl;
@@ -75,12 +88,16 @@ void GameOfLife::info()
 	cout << GREEN "Proceeding " << generation << " generation(s) with " << (autoProceed == true ? "automatic" : "manual") << " proceeding" << NONE << endl;
 	cout << GREEN "=====================INFO====================\n\n\n" NONE << endl;
 
+#if DEBUG == 1
+	promptForContinue();
+#else
 	promptForContinue(true);
+#endif
 }
 
-void GameOfLife::initialize(int t)
+void GameOfLife::initialize(int p)
 {
-	int mode = t;
+	int mode = p;
 	if(! (1 <= mode && mode <= 100)) {
 		cout << RED "Mode out-of-range!" NONE << endl;
 		return;
@@ -88,7 +105,7 @@ void GameOfLife::initialize(int t)
 
 	this->mode = mode;
 
-	memset(stateMap, 0, sizeof(stateMap));
+	memset(cell, 0, sizeof(cell));
 	if(mode == 1) {
 		// 3 * 3
 		int upperLeftX = h / 2 - 3 / 2;
@@ -100,7 +117,7 @@ void GameOfLife::initialize(int t)
 
 		for(int i = upperLeftX; i < upperLeftX + 3; i++) {
 			for(int j = upperLeftY; j < upperLeftY + 3; j++) {
-				stateMap[i][j] = data[i - upperLeftX][j - upperLeftY];	
+				cell[i][j] = data[i - upperLeftX][j - upperLeftY];
 			}
 		}
 	} else if(mode == 2) {
@@ -114,7 +131,7 @@ void GameOfLife::initialize(int t)
 
 		for(int i = upperLeftX; i < upperLeftX + 4; i++) {
 			for(int j = upperLeftY; j < upperLeftY + 5; j++) {
-				stateMap[i][j] = data[i - upperLeftX][j - upperLeftY];	
+				cell[i][j] = data[i - upperLeftX][j - upperLeftY];
 			}
 		}
 	} else if(mode == 3) {
@@ -137,7 +154,7 @@ void GameOfLife::initialize(int t)
 
 		for(int i = upperLeftX; i < upperLeftX + 13; i++) {
 			for(int j = upperLeftY; j < upperLeftY + 13; j++) {
-				stateMap[i][j] = data[i - upperLeftX][j - upperLeftY];	
+				cell[i][j] = data[i - upperLeftX][j - upperLeftY];
 			}
 		}
 	} else {
@@ -147,8 +164,8 @@ void GameOfLife::initialize(int t)
 			do {
 				int x = rand() % h;
 				int y = rand() % w;
-				if(stateMap[x][y] == false) {
-					stateMap[x][y] = true;
+				if(cell[x][y] == false) {
+					cell[x][y] = true;
 					break;
 				}
 			} while(1);
@@ -168,7 +185,7 @@ void GameOfLife::setGeneration(int generation)
 bool GameOfLife::inBound(int x, int y)
 {
 	return (0 <= x && x < h) && (0 <= y && y < w);
-}	
+}
 
 void GameOfLife::go()
 {
@@ -183,11 +200,11 @@ void GameOfLife::go()
 				int yy = j + dy[k];
 
 				if(inBound(xx, yy)) {
-					neighbors += (stateMap[xx][yy] == true ? 1 : 0);
+					neighbors += (cell[xx][yy] == true ? 1 : 0);
 				}
 			}
 
-			if(stateMap[i][j]) {
+			if(cell[i][j]) {
 				newStateMap[i][j] = ((neighbors == 2 || neighbors == 3) ? true : false);
 			} else {
 				newStateMap[i][j] = (neighbors == 3 ? true : false);
@@ -195,9 +212,9 @@ void GameOfLife::go()
 		}
 	}
 
-	for(int i = 0; i < h; i++) 
-		for(int j = 0; j < w; j++)  
-			stateMap[i][j] = newStateMap[i][j];
+	for(int i = 0; i < h; i++)
+		for(int j = 0; j < w; j++)
+			cell[i][j] = newStateMap[i][j];
 }
 
 void GameOfLife::setAutoProceed(char inp[])
@@ -207,7 +224,7 @@ void GameOfLife::setAutoProceed(char inp[])
 	} else {
 		this->autoProceed = false;
 	}
-}	
+}
 
 void GameOfLife::promptForContinue(bool firstTime)
 {
@@ -218,7 +235,7 @@ void GameOfLife::promptForContinue(bool firstTime)
 }
 
 void GameOfLife::run()
-{	
+{
 	if(autoProceed) {
 		// auto
 		cout << YELLOW "Initial state" NONE << endl;
@@ -233,19 +250,19 @@ void GameOfLife::run()
 		promptForContinue();
 
 		for(int i = 0; i < generation; i++) {
-			proceed();	
+			proceed();
 			cout << YELLOW "Generation " << i + 1 << NONE << endl;
 			promptForContinue();
 		}
 	}
 }
 
-void GameOfLife::proceed(int p)
+void GameOfLife::proceed(int t)
 {
-	for(int g = 1; g <= p; g++) {
+	for(int g = 1; g <= t; g++) {
 		clearScreen();
 		// printf("\n");
-		go();	
+		go();
 		display();
 
 		if(autoProceed) {
@@ -255,17 +272,17 @@ void GameOfLife::proceed(int p)
 	}
 }
 
-void GameOfLife::clearScreen() 
+void GameOfLife::clearScreen()
 {
 	for(int i = 0; i < 100; i++)
 		printf("\n");
 }
 
 void GameOfLife::display()
-{	
+{
 	for(int i = 0; i < h; i++) {
 		for(int j = 0; j < w; j++) {
-			printf("%c", stateMap[i][j] == true ? '#' : '.');
+			printf("%c", cell[i][j] == true ? '#' : '.');
 		}
 		printf("\n");
 	}
@@ -273,6 +290,18 @@ void GameOfLife::display()
 
 int main()
 {
+#if DEBUG == 1
+	for(int i = 1; i <= 4; i++) {
+		GameOfLife game;
+		game.initialize(i);
+		game.setGeneration(100);
+		game.setAutoProceed("y");
+		game.info();
+		game.run();
+
+		cout << endl;
+	}
+#else
 	cout << GREEN "Please set the width and height (enter -1, -1 for default size)"  NONE << endl;
 	int w, h;
 	cin >> w >> h;
@@ -298,7 +327,6 @@ int main()
 	cout << GREEN "Let's start!" NONE << endl;
 	game.info();
 	game.run();
-
+#endif
 	return 0;
 }
-
