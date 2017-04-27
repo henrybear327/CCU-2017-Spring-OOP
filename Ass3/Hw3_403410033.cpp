@@ -29,6 +29,13 @@ class Rational
 
 	int getNumerator() const;
 	int getDenominator() const;
+
+	friend const Rational operator*(const Rational& a, const Rational& b);
+	friend const Rational operator/(const Rational& a, const Rational& b);
+	friend bool operator==(const Rational& a, const Rational& b);
+	friend ostream& operator<<(ostream &out, const Rational& a);
+	friend istream& operator>>(istream &in, Rational& a);
+
 	private:
 	int numerator;
 	int denominator;
@@ -84,6 +91,71 @@ int Rational::getDenominator() const
 	return denominator;
 }
 
+const Rational operator+(const Rational& a, const Rational& b)
+{
+	int denominator = a.getDenominator() * b.getDenominator();
+	int numerator = a.getNumerator() * b.getDenominator() + b.getNumerator() * a.getDenominator();
+
+	return Rational(numerator, denominator);
+}
+
+const Rational operator-(const Rational& a, const Rational& b)
+{
+	int denominator = a.getDenominator() * b.getDenominator();
+	int numerator = a.getNumerator() * b.getDenominator() - b.getNumerator() * a.getDenominator();
+
+	return Rational(numerator, denominator);
+}
+
+const Rational operator-(const Rational& a)
+{
+	int denominator = a.getDenominator();
+	int numerator = a.getNumerator();
+
+	return Rational(numerator * -1, denominator);
+}
+
+const Rational operator*(const Rational& a, const Rational& b)
+{
+	int numerator = a.numerator * b.numerator;
+	int denominator = a.denominator * b.denominator;
+
+	return Rational(numerator, denominator);
+}
+
+const Rational operator/(const Rational& a, const Rational& b)
+{
+	// (p / q) / (x / y) = (py / qx)
+	int numerator = a.numerator * b.denominator;
+	int denominator = a.denominator * b.numerator;
+
+	return Rational(numerator, denominator);
+}
+
+bool operator==(const Rational& a, const Rational& b)
+{
+	return (a.numerator == b.numerator) && (a.denominator == b.denominator);
+}
+
+ostream& operator<<(ostream &out, const Rational& a)
+{
+	cout << a.getNumerator() << "/" << a.getDenominator();
+
+	return out;
+}
+
+istream& operator>>(istream &in, Rational& a)
+{
+	int newNumerator, newDenominator;
+	in >> newNumerator >> newDenominator;
+	
+	a.numerator = newNumerator;
+	a.denominator = newDenominator;
+	a.normalize();
+
+	return in;
+}
+
 int main()
 {
 	
@@ -99,6 +171,31 @@ int main()
 	cout << NONE << endl;
 #endif
 
+#if DEBUG == 1
+	cout << CYAN "Testing overloading. Please enter two rationals:" << endl;
+	
+	Rational a(2, 3), b(3, 5);
+	
+	cin >> a;
+	cin >> b;
+
+	cout << a << endl;
+	cout << b << endl;
+	
+	cout << a + b << endl;
+	cout << a - b << endl;
+	cout << a * b << endl;
+	cout << a / b << endl;
+	cout << -a << endl;
+	cout << -b << endl;
+	
+	string res = (a == b) ? "True" : "False";
+	cout << res << endl;
+	res = (a == a) ? "True" : "False";
+	cout << res << endl;
+
+	cout << NONE << endl;
+#endif
 
 
     return 0;
