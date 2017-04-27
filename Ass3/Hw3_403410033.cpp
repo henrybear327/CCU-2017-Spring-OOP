@@ -36,6 +36,12 @@ class Rational
 	friend ostream& operator<<(ostream &out, const Rational& a);
 	friend istream& operator>>(istream &in, Rational& a);
 
+	bool operator<(const Rational &b) const;
+	bool operator<=(const Rational &b) const;
+	bool operator>(const Rational &b) const;
+	bool operator>=(const Rational &b) const;
+	int operator[](int index) const;
+
 	private:
 	int numerator;
 	int denominator;
@@ -156,6 +162,46 @@ istream& operator>>(istream &in, Rational& a)
 	return in;
 }
 
+bool Rational::operator<(const Rational &b) const
+{
+	int numeratorA = numerator * b.denominator;
+	int numeratorB = b.numerator * denominator;
+
+	return numeratorA < numeratorB;
+}
+
+bool Rational::operator<=(const Rational &b) const
+{
+	int numeratorA = numerator * b.denominator;
+	int numeratorB = b.numerator * denominator;
+
+	return numeratorA <= numeratorB;
+}
+
+bool Rational::operator>(const Rational &b) const
+{
+	int numeratorA = numerator * b.denominator;
+	int numeratorB = b.numerator * denominator;
+
+	return numeratorA > numeratorB;
+}
+
+bool Rational::operator>=(const Rational &b) const
+{
+	int numeratorA = numerator * b.denominator;
+	int numeratorB = b.numerator * denominator;
+
+	return numeratorA >= numeratorB;
+}
+
+int Rational::operator[](int index) const
+{
+	if(index == 0)
+		return numerator;
+	else
+		return denominator;
+}
+
 int main()
 {
 	
@@ -178,21 +224,48 @@ int main()
 	
 	cin >> a;
 	cin >> b;
-
+	
+	cout << "The rationals you entered... " << endl;
 	cout << a << endl;
 	cout << b << endl;
+	cout << endl;
 	
+	cout << "a + b" << endl;
 	cout << a + b << endl;
+	cout << "a - b" << endl;
 	cout << a - b << endl;
+	cout << "a * b" << endl;
 	cout << a * b << endl;
+	cout << "a / b" << endl;
 	cout << a / b << endl;
+	cout << "-a" << endl;
 	cout << -a << endl;
+	cout << "-b" << endl;
 	cout << -b << endl;
 	
+	cout << "a == b" << endl;
 	string res = (a == b) ? "True" : "False";
 	cout << res << endl;
+	cout << "a == a" << endl;
 	res = (a == a) ? "True" : "False";
 	cout << res << endl;
+	cout << "a < b" << endl;
+	res = (a < b) ? "True" : "False";
+	cout << res << endl;
+	cout << "a <= b" << endl;
+	res = (a <= b) ? "True" : "False";
+	cout << res << endl;
+	cout << "a > b" << endl;
+	res = (a > b) ? "True" : "False";
+	cout << res << endl;
+	cout << "a >= b" << endl;
+	res = (a >= b) ? "True" : "False";
+	cout << res << endl;
+
+	cout << "a[0] a[1]" << endl;
+	cout << a[0] << " " << a[1] << endl;
+	cout << "b[0] b[1]" << endl;
+	cout << b[0] << " " << b[1] << endl;
 
 	cout << NONE << endl;
 #endif
