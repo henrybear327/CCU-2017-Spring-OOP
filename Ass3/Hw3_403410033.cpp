@@ -207,7 +207,6 @@ int Rational::operator[](int index) const
 int main()
 {
 
-#if DEBUG == 1
     cout << CYAN "Testing init..." << endl;
 
     Rational default1, default2(100, -400), default3(3);
@@ -217,10 +216,8 @@ int main()
     cout << default3.getNumerator() << "/" << default3.getDenominator() << endl;
 
     cout << NONE << endl;
-#endif
 
-#if DEBUG == 1
-    cout << CYAN "Testing overloading. Please enter two rationals:" << endl;
+    cout << CYAN "Please enter two rationals: (enter int int int int)" << endl;
 
     Rational a(2, 3), b(3, 5);
 
@@ -270,7 +267,6 @@ int main()
     cout << b[0] << " " << b[1] << endl;
 
     cout << NONE << endl;
-#endif
 
     return 0;
 }
