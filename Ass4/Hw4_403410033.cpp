@@ -43,6 +43,30 @@ BigInt::BigInt()
     data[0] = 0;
 }
 
+BigInt::BigInt(int num)
+{
+	int tmp = num;
+	dataSize = 0;
+	while(tmp > 0) {
+		dataSize++;
+		tmp /= 10;
+	}
+
+	tmp = num;
+	data = new int[dataSize];
+	for(int i = 0; tmp > 0; i++, tmp /= 10) 
+		data[i] = tmp % 10;
+}
+
+
+BigInt::BigInt(string num)
+{
+	dataSize = num.length();
+	data = new int[dataSize];
+	for(int i = num.length() - 1, j = 0; i >= 0; i--, j++) 
+		data[j] = num[i] - '0';
+}
+
 string BigInt::toString() const
 {	
 	string res = "";
@@ -70,6 +94,8 @@ BigInt::~BigInt()
 int main()
 {
     BigInt num1;
+	BigInt num2(100);
+	BigInt num3("1000");
 
     return 0;
 }
