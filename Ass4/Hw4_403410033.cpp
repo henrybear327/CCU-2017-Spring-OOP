@@ -10,7 +10,7 @@ Junior year student
 #include <iostream>
 #include <string>
 
-#define DEBUG 1
+#define DEBUG 0
 
 using namespace std;
 
@@ -123,7 +123,6 @@ ostream &operator<<(ostream &out, const BigInt &other)
 const BigInt BigInt::operator+(const BigInt &other) const
 {
     int mx = max(this->dataSize, other.dataSize);
-    int mn = min(this->dataSize, other.dataSize);
 
     int *sum = new int[mx + 1];
     memset(sum, 0, sizeof(int) * (mx + 1));
@@ -145,7 +144,6 @@ const BigInt BigInt::operator+(const BigInt &other) const
 const BigInt BigInt::operator-(const BigInt &other) const
 {
     int mx = max(this->dataSize, other.dataSize);
-    int mn = min(this->dataSize, other.dataSize);
 
     int *res = new int[mx];
     memset(res, 0, sizeof(int) * (mx));
@@ -210,7 +208,6 @@ BigInt::~BigInt()
     cout << "BigInt object with value " << *this << " is being deleted" << endl;
 #endif
 
-    cout << data << endl;
     delete[] data;
 }
 
