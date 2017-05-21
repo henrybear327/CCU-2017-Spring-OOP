@@ -10,7 +10,12 @@ Junior year student
 #include <iostream>
 #include <string>
 
-#define DEBUG 0
+/*
+0 normal mode
+1 default testing
+2 debug print
+*/
+#define DEBUG 1
 
 using namespace std;
 
@@ -42,7 +47,7 @@ private:
 
 BigInt::BigInt()
 {
-#if DEBUG == 1
+#if DEBUG == 2
     cout << "BigInt() called" << endl;
 #endif
 
@@ -56,7 +61,7 @@ BigInt::BigInt()
 
 BigInt::BigInt(int num)
 {
-#if DEBUG == 1
+#if DEBUG == 2
     cout << "BigInt(int num) called" << endl;
 #endif
 
@@ -81,7 +86,7 @@ BigInt::BigInt(int num)
 
 BigInt::BigInt(int *num, int dataSize, bool isNegative)
 {
-#if DEBUG == 1
+#if DEBUG == 2
     cout << "BigInt(int num[], int dataSize) called" << endl;
 #endif
 
@@ -94,7 +99,7 @@ BigInt::BigInt(int *num, int dataSize, bool isNegative)
 
 BigInt::BigInt(string num)
 {
-#if DEBUG == 1
+#if DEBUG == 2
     cout << "BigInt(string num) called" << endl;
 #endif
 
@@ -227,7 +232,7 @@ const BigInt BigInt::operator-(const BigInt &other) const
 
 BigInt &BigInt::operator=(const BigInt &other)
 {
-#if DEBUG == 1
+#if DEBUG == 2
     cout << "operator=(const BigInt &other) called" << endl;
 #endif
 
@@ -245,7 +250,7 @@ BigInt &BigInt::operator=(const BigInt &other)
 
 BigInt::BigInt(const BigInt &other)
 {
-#if DEBUG == 1
+#if DEBUG == 2
     cout << "BigInt(const BigInt &other) called" << endl;
 #endif
 
@@ -259,7 +264,7 @@ BigInt::BigInt(const BigInt &other)
 
 BigInt::~BigInt()
 {
-#if DEBUG == 1
+#if DEBUG == 2
     cout << "BigInt object with value " << *this << " is being deleted" << endl;
 #endif
 
@@ -268,6 +273,7 @@ BigInt::~BigInt()
 
 int main()
 {
+#if DEBUG >= 1
     // +
     {
         BigInt num1;
@@ -276,8 +282,7 @@ int main()
 
         BigInt sum = num2 + num3;
         cout << num2 << " + " << num3 << " = " << sum << endl;
-    }
-    {
+    } {
         BigInt num1;
         BigInt num2(-5);
         BigInt num3("50");
@@ -312,8 +317,7 @@ int main()
 
         BigInt sum = num2 - num3;
         cout << num2 << " - " << num3 << " = " << sum << endl;
-    }
-    {
+    } {
         BigInt num1;
         BigInt num2(-5);
         BigInt num3("50");
@@ -346,6 +350,7 @@ int main()
     cout << a << " + " << *b << " = " << c << endl;
     c = a - *b;
     cout << a << " - " << *b << " = " << c << endl;
+#endif
 
     return 0;
 }
