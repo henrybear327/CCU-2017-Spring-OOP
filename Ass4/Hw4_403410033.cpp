@@ -37,7 +37,7 @@ private:
     int dataSize;
     bool isNegative;
     string toString() const;
-    BigInt negate();
+    BigInt negate() const;
 };
 
 BigInt::BigInt()
@@ -132,7 +132,7 @@ ostream &operator<<(ostream &out, const BigInt &other)
     return out;
 }
 
-BigInt BigInt::negate()
+BigInt BigInt::negate() const
 {
     BigInt ret(*this);
 
@@ -178,33 +178,51 @@ const BigInt BigInt::operator+(const BigInt &other) const
 const BigInt BigInt::operator-(const BigInt &other) const
 {
     int mx = max(this->dataSize, other.dataSize);
-    bool resultIsNegative = false;
 
-    int *res = new int[mx];
-    memset(res, 0, sizeof(int) * (mx));
+    if (isNegative == false && other.isNegative == false) {
+        if ((*this).toString() < other.toString()) {
+            BigInt tmp = *this;
+            BigInt tmp1 = other;
+            BigInt res = (tmp1 - tmp);
 
-    // TODO: handle small - big
-    int borrow = 0;
-    for (int i = 0; i < mx; i++) {
-        int current = borrow;
-        borrow = 0;
-
-        if (i < this->dataSize)
-            current += this->data[i];
-        if (i < other.dataSize)
-            current -= other.data[i];
-
-        if (current < 0) {
-            borrow = -1;
-            current += 10;
+            return res.negate();
         }
 
-        res[i] = current;
-    }
+        int *res = new int[mx];
+        memset(res, 0, sizeof(int) * (mx));
 
-    BigInt ret = BigInt(res, mx, resultIsNegative);
-    delete[] res;
-    return ret;
+        int borrow = 0;
+        for (int i = 0; i < mx; i++) {
+            int current = borrow;
+            borrow = 0;
+
+            if (i < this->dataSize)
+                current += this->data[i];
+            if (i < other.dataSize)
+                current -= other.data[i];
+
+            if (current < 0) {
+                borrow = -1;
+                current += 10;
+            }
+
+            res[i] = current;
+        }
+
+        BigInt ret = BigInt(res, mx, false);
+        delete[] res;
+        return ret;
+    } else {
+        if (isNegative != other.isNegative) {
+            if (isNegative) {
+                return ((*this).negate() + other).negate();
+            } else {
+                return (*this) + other.negate();
+            }
+        } else {
+            return (*this) + other.negate();
+        }
+    }
 }
 
 BigInt &BigInt::operator=(const BigInt &other)
@@ -250,6 +268,7 @@ BigInt::~BigInt()
 
 int main()
 {
+    // +
     {
         BigInt num1;
         BigInt num2(100);
@@ -283,6 +302,42 @@ int main()
 
         BigInt sum = num2 + num3;
         cout << num2 << " + " << num3 << " = " << sum << endl;
+    }
+
+    // -
+    {
+        BigInt num1;
+        BigInt num2(100);
+        BigInt num3("1000");
+
+        BigInt sum = num2 - num3;
+        cout << num2 << " - " << num3 << " = " << sum << endl;
+    }
+    {
+        BigInt num1;
+        BigInt num2(-5);
+        BigInt num3("50");
+
+        BigInt sum = num2 - num3;
+        cout << num2 << " - " << num3 << " = " << sum << endl;
+    }
+
+    {
+        BigInt num1;
+        BigInt num2(50);
+        BigInt num3("-5");
+
+        BigInt sum = num2 - num3;
+        cout << num2 << " - " << num3 << " = " << sum << endl;
+    }
+
+    {
+        BigInt num1;
+        BigInt num2(-50);
+        BigInt num3("-5");
+
+        BigInt sum = num2 - num3;
+        cout << num2 << " - " << num3 << " = " << sum << endl;
     }
 
     BigInt a("314159265358979323846264338327950288419716939937510"), c(a);
