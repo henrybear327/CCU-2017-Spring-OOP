@@ -132,6 +132,36 @@ const BigInt BigInt::operator+(const BigInt &other) const
     return res;
 }
 
+BigInt &BigInt::operator=(const BigInt &other)
+{
+#if DEBUG == 1
+    cout << "operator=(const BigInt &other) called" << endl;
+#endif
+
+    delete[] data;
+
+    dataSize = other.dataSize;
+    data = new int[dataSize];
+
+    for (int i = 0; i < dataSize; i++)
+        data[i] = other.data[i];
+
+    return *this;
+}
+
+BigInt::BigInt(const BigInt &other)
+{
+#if DEBUG == 1
+    cout << "BigInt(const BigInt &other) called" << endl;
+#endif
+
+    dataSize = other.dataSize;
+    data = new int[dataSize];
+
+    for (int i = 0; i < dataSize; i++)
+        data[i] = other.data[i];
+}
+
 BigInt::~BigInt()
 {
 #if DEBUG == 1
@@ -150,6 +180,13 @@ int main()
 
     BigInt sum = num2 + num3;
     cout << num2 << " + " << num3 << " = " << sum << endl;
+
+    BigInt a("314159265358979323846264338327950288419716939937510"), c(a);
+    BigInt *b = new BigInt(1618033988);
+    c = a + *b;
+    cout << a << " = " << *b << " = " << c << endl;
+    // c = a - *b;
+    // cout << a << " = " << *b << " = " << c << endl;
 
     return 0;
 }
