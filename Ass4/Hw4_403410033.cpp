@@ -37,6 +37,7 @@ private:
     int dataSize;
     bool isNegative;
     string toString() const;
+    BigInt negate();
 };
 
 BigInt::BigInt()
@@ -106,7 +107,7 @@ BigInt::BigInt(string num)
     }
 
     data = new int[dataSize];
-    for (int i = dataSize - 1, j = 0; i >= 0; i--, j++)
+    for (int i = num.length() - 1, j = 0; i >= (num[0] == '-' ? 1 : 0); i--, j++)
         data[j] = num[i] - '0';
 }
 
@@ -131,27 +132,47 @@ ostream &operator<<(ostream &out, const BigInt &other)
     return out;
 }
 
+BigInt BigInt::negate()
+{
+    BigInt ret(*this);
+
+    if (ret.isNegative)
+        ret.isNegative = false;
+    else
+        ret.isNegative = true;
+
+    return ret;
+}
+
 const BigInt BigInt::operator+(const BigInt &other) const
 {
     int mx = max(this->dataSize, other.dataSize);
 
-    bool resultIsNegative = false;
+    if (isNegative == other.isNegative) {
+        int *sum = new int[mx + 1];
+        memset(sum, 0, sizeof(int) * (mx + 1));
+        for (int i = 0; i < mx; i++) {
+            if (i < this->dataSize)
+                sum[i] += this->data[i];
+            if (i < other.dataSize)
+                sum[i] += other.data[i];
 
-    int *sum = new int[mx + 1];
-    memset(sum, 0, sizeof(int) * (mx + 1));
-    for (int i = 0; i < mx; i++) {
-        if (i < this->dataSize)
-            sum[i] += this->data[i];
-        if (i < other.dataSize)
-            sum[i] += other.data[i];
+            sum[i + 1] += sum[i] / 10;
+            sum[i] %= 10;
+        }
 
-        sum[i + 1] += sum[i] / 10;
-        sum[i] %= 10;
+        BigInt res = BigInt(sum, mx + 1, isNegative);
+        delete[] sum;
+        return res;
+    } else {
+        if (isNegative == true) {
+            BigInt tmp = (*this);
+            return other - tmp.negate();
+        } else {
+            BigInt tmp = other;
+            return *this - tmp.negate();
+        }
     }
-
-    BigInt res = BigInt(sum, mx + 1, resultIsNegative);
-    delete[] sum;
-    return res;
 }
 
 const BigInt BigInt::operator-(const BigInt &other) const
@@ -229,12 +250,40 @@ BigInt::~BigInt()
 
 int main()
 {
-    BigInt num1;
-    BigInt num2(100);
-    BigInt num3("1000");
+    {
+        BigInt num1;
+        BigInt num2(100);
+        BigInt num3("1000");
 
-    BigInt sum = num2 + num3;
-    cout << num2 << " + " << num3 << " = " << sum << endl;
+        BigInt sum = num2 + num3;
+        cout << num2 << " + " << num3 << " = " << sum << endl;
+    }
+    {
+        BigInt num1;
+        BigInt num2(-5);
+        BigInt num3("50");
+
+        BigInt sum = num2 + num3;
+        cout << num2 << " + " << num3 << " = " << sum << endl;
+    }
+
+    {
+        BigInt num1;
+        BigInt num2(50);
+        BigInt num3("-5");
+
+        BigInt sum = num2 + num3;
+        cout << num2 << " + " << num3 << " = " << sum << endl;
+    }
+
+    {
+        BigInt num1;
+        BigInt num2(-50);
+        BigInt num3("-5");
+
+        BigInt sum = num2 + num3;
+        cout << num2 << " + " << num3 << " = " << sum << endl;
+    }
 
     BigInt a("314159265358979323846264338327950288419716939937510"), c(a);
     BigInt *b = new BigInt(1618033988);
