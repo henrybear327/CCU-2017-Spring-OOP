@@ -35,6 +35,7 @@ private:
     BigInt(int *num, int dataSize);
     int *data;
     int dataSize;
+    bool isNegative;
     string toString() const;
 };
 
@@ -44,6 +45,8 @@ BigInt::BigInt()
 #if DEBUG == 1
     cout << "BigInt() called" << endl;
 #endif
+
+    isNegative = false;
     dataSize = 1;
     data = new int[dataSize];
 
@@ -55,6 +58,13 @@ BigInt::BigInt(int num)
 #if DEBUG == 1
     cout << "BigInt(int num) called" << endl;
 #endif
+
+    if (num < 0) {
+        isNegative = true;
+        num *= -1;
+    } else
+        isNegative = false;
+
     int tmp = num;
     dataSize = 0;
     while (tmp > 0) {
@@ -132,6 +142,38 @@ const BigInt BigInt::operator+(const BigInt &other) const
     return res;
 }
 
+const BigInt BigInt::operator-(const BigInt &other) const
+{
+    int mx = max(this->dataSize, other.dataSize);
+    int mn = min(this->dataSize, other.dataSize);
+
+    int *res = new int[mx];
+    memset(res, 0, sizeof(int) * (mx));
+
+    // TODO: handle small - big
+    int borrow = 0;
+    for (int i = 0; i < mx; i++) {
+        int current = borrow;
+        borrow = 0;
+
+        if (i < this->dataSize)
+            current += this->data[i];
+        if (i < other.dataSize)
+            current -= other.data[i];
+
+        if (current < 0) {
+            borrow = -1;
+            current += 10;
+        }
+
+        res[i] = current;
+    }
+
+    BigInt ret = BigInt(res, mx);
+    delete[] res;
+    return ret;
+}
+
 BigInt &BigInt::operator=(const BigInt &other)
 {
 #if DEBUG == 1
@@ -184,9 +226,9 @@ int main()
     BigInt a("314159265358979323846264338327950288419716939937510"), c(a);
     BigInt *b = new BigInt(1618033988);
     c = a + *b;
-    cout << a << " = " << *b << " = " << c << endl;
-    // c = a - *b;
-    // cout << a << " = " << *b << " = " << c << endl;
+    cout << a << " + " << *b << " = " << c << endl;
+    c = a - *b;
+    cout << a << " - " << *b << " = " << c << endl;
 
     return 0;
 }
