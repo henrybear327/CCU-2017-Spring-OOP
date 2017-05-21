@@ -32,7 +32,7 @@ public:
     ~BigInt();
 
 private:
-    BigInt(int *num, int dataSize, bool isNegative);
+    BigInt(int *num, int dataSize);
     int *data;
     int dataSize;
     bool isNegative;
@@ -41,11 +41,11 @@ private:
 
 BigInt::BigInt()
 {
+// initialize to 0
 #if DEBUG == 1
     cout << "BigInt() called" << endl;
 #endif
 
-    // initialize to 0
     isNegative = false;
     dataSize = 1;
     data = new int[dataSize];
@@ -78,14 +78,13 @@ BigInt::BigInt(int num)
         data[i] = tmp % 10;
 }
 
-BigInt::BigInt(int *num, int dataSize, bool isNegative)
+BigInt::BigInt(int *num, int dataSize)
 {
 #if DEBUG == 1
     cout << "BigInt(int num[], int dataSize) called" << endl;
 #endif
 
     this->dataSize = dataSize;
-    this->isNegative = isNegative;
     data = new int[dataSize];
     for (int i = 0; i < dataSize; i++)
         this->data[i] = num[i];
@@ -96,17 +95,9 @@ BigInt::BigInt(string num)
 #if DEBUG == 1
     cout << "BigInt(string num) called" << endl;
 #endif
-
-    if (num[0] == '-') {
-        isNegative = true;
-        dataSize = num.length() - 1;
-    } else {
-        isNegative = false;
-        dataSize = num.length();
-    }
-
+    dataSize = num.length();
     data = new int[dataSize];
-    for (int i = dataSize - 1, j = 0; i >= 0; i--, j++)
+    for (int i = num.length() - 1, j = 0; i >= 0; i--, j++)
         data[j] = num[i] - '0';
 }
 
@@ -117,8 +108,6 @@ string BigInt::toString() const
         firstNonZero--;
 
     string res = "";
-    if (isNegative)
-        res += "-";
     for (int i = firstNonZero; i >= 0; i--)
         res += data[i] + '0';
     return res;
@@ -135,8 +124,6 @@ const BigInt BigInt::operator+(const BigInt &other) const
 {
     int mx = max(this->dataSize, other.dataSize);
 
-    bool resultIsNegative = false;
-
     int *sum = new int[mx + 1];
     memset(sum, 0, sizeof(int) * (mx + 1));
     for (int i = 0; i < mx; i++) {
@@ -149,7 +136,7 @@ const BigInt BigInt::operator+(const BigInt &other) const
         sum[i] %= 10;
     }
 
-    BigInt res = BigInt(sum, mx + 1, resultIsNegative);
+    BigInt res = BigInt(sum, mx + 1);
     delete[] sum;
     return res;
 }
@@ -157,7 +144,6 @@ const BigInt BigInt::operator+(const BigInt &other) const
 const BigInt BigInt::operator-(const BigInt &other) const
 {
     int mx = max(this->dataSize, other.dataSize);
-    bool resultIsNegative = false;
 
     int *res = new int[mx];
     memset(res, 0, sizeof(int) * (mx));
@@ -181,7 +167,7 @@ const BigInt BigInt::operator-(const BigInt &other) const
         res[i] = current;
     }
 
-    BigInt ret = BigInt(res, mx, resultIsNegative);
+    BigInt ret = BigInt(res, mx);
     delete[] res;
     return ret;
 }
@@ -195,7 +181,6 @@ BigInt &BigInt::operator=(const BigInt &other)
     delete[] data;
 
     dataSize = other.dataSize;
-    isNegative = other.isNegative;
     data = new int[dataSize];
 
     for (int i = 0; i < dataSize; i++)
@@ -211,7 +196,6 @@ BigInt::BigInt(const BigInt &other)
 #endif
 
     dataSize = other.dataSize;
-    isNegative = other.isNegative;
     data = new int[dataSize];
 
     for (int i = 0; i < dataSize; i++)
