@@ -1,5 +1,5 @@
 all:
-	g++ -Wall -Wextra -std=c++11 Hw4_403410033.cpp -o bigInt
+	g++ -Wall -Wextra -std=c++11 -O2 Hw4_403410033.cpp -o bigInt
 
 format: 
 	clang-format -i -style=LLVM *.cpp 

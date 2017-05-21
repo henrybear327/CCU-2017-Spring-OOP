@@ -3,6 +3,9 @@
    403410033
    Computer Science and Information Technology
    Junior year student
+
+   Please set DEBUG variable on line 21 to 1 in order to use default test cases
+   You can also manually create test cases using the format that is the same as the assignment specification
  */
 
 #include <algorithm>
@@ -302,11 +305,11 @@ BigInt::~BigInt()
 string BigIntOutput(int i, int j)
 {
     string res = "";
-    BigInt num1(i);
-    BigInt num2(j);
+    // BigInt num1(i);
+    // BigInt num2(j);
 
-    // BigInt num1(to_string(i));
-    // BigInt num2(to_string(j));
+    BigInt num1(to_string(i));
+    BigInt num2(to_string(j));
 
     BigInt sum = num1 + num2;
     res =
@@ -497,7 +500,7 @@ int main()
     cout << a << " - " << *b << " = " << c << endl;
 #endif
 
-    tester(5000);
+    // tester(5000);
 
     // BigInt a(72), b(-913);
     // cout << a + b << endl;
