@@ -311,9 +311,9 @@ string BigIntOutput(int i, int j)
     BigInt num1(to_string(i));
     BigInt num2(to_string(j));
 
-    BigInt sum = num1 + num2;
+    BigInt sum = num1 - num2;
     res =
-        num1.toString() + " + " + num2.toString() + " = " + sum.toString() + "\n";
+        num1.toString() + " - " + num2.toString() + " = " + sum.toString() + "\n";
 
     return res;
 }
@@ -322,7 +322,7 @@ string normalOutout(int i, int j)
 {
     string res = "";
 
-    res = to_string(i) + " + " + to_string(j) + " = " + to_string(i + j) + "\n";
+    res = to_string(i) + " - " + to_string(j) + " = " + to_string(i - j) + "\n";
 
     return res;
 }
@@ -500,7 +500,7 @@ int main()
     cout << a << " - " << *b << " = " << c << endl;
 #endif
 
-    // tester(5000);
+    tester(1500);
 
     // BigInt a(72), b(-913);
     // cout << a + b << endl;
